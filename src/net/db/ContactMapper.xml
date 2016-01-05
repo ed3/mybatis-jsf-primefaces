@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Contact">
+	<resultMap type="net.db.model.Contact" id="resultContact">
+	<result property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="age" column="age"/>
+	</resultMap>
+	<select id="searchById" parameterType="int" resultType="net.db.model.Contact">
+	select * from contact where id = #{id}
+	</select>
+	<select id="getContacts" resultType="net.db.model.Contact">
+	select * from contact
+	</select>
+	<insert id="addContact" useGeneratedKeys="true" keyProperty="id" parameterType="net.db.model.Contact">
+	insert into contact(name, age) values(#{name}, #{age})
+	</insert>
+	<update id="updContact" parameterType="net.db.model.Contact">
+	update contact set name=#{name},age=#{age} where id=#{id}
+	</update>
+	<delete id="delContact" parameterType="int">
+	delete from contact WHERE id = #{id}
+	</delete>
+</mapper>
