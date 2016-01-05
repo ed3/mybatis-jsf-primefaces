@@ -1,7 +1,5 @@
 mybatis-jsf-primefaces-datatable-dialog
 
-Use for learning...
-
 In this case have a datatable and add-edit with a dialog.
 
 requirements:
