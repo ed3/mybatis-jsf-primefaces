@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Agenda</title>
+</h:head>
+<h:body>
+	<p:dialog widgetVar="addWi" showEffect="clip" hideEffect="fold" dynamic="true" modal="true" header="Add">
+		<h:form id="addForm">
+		<h:panelGrid columns="2">
+			Name: <p:inputText value="#{contactBean.contact.name}" />
+			Age: <p:spinner value="#{contactBean.contact.age}" />
+			<p:commandButton value="Save" update=":aForm" oncomplete="PF('dtWi').clearFilters();PF('addWi').hide();" action="#{contactBean.saveContact(contactBean.contact)}" />
+			<p:commandButton value="Cancel" oncomplete="PF('addWi').hide();" />
+		</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	<p:dialog widgetVar="editWi" showEffect="clip" hideEffect="fold" dynamic="true" modal="true" header="Edit">
+		<h:form id="editForm">
+			<h:inputHidden id="id" value="#{contactBean.contact.id}" />
+			<h:panelGrid columns="2">
+			Name: <p:inputText id="name" value="#{contactBean.contact.name}" />
+			Age: <p:spinner id="age" value="#{contactBean.contact.age}"/>
+			<p:commandButton value="Update" update=":aForm" oncomplete="PF('dtWi').clearFilters();PF('editWi').hide();" action="#{contactBean.saveContact(contactBean.contact)}" />
+			<p:commandButton value="Cancel" oncomplete="PF('editWi').hide();" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	<h:form id="aForm">
+		<p:messages closable="true" showDetail="true" showSummary="true" />
+		<p:dataTable var="ct" widgetVar="dtWi" value="#{contactBean.contacts}" rowKey="${ct.id}" 
+		filteredValue="#{contactBean.filteredContact}" paginator="true" paginatorPosition="bottom" 
+		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+		rows="5" rowsPerPageTemplate="5,10,15" emptyMessage="No contact found">
+			<p:column id="id" filterBy="#{ct.id}" filterMatchMode="contains" headerText="Id">
+				<h:outputText value="#{ct.id}" />
+			</p:column>
+			<p:column id="name" filterBy="#{ct.name}" filterMatchMode="contains" headerText="Name">
+				<h:outputText value="#{ct.name}" />
+			</p:column>
+			<p:column id="age" filterBy="#{ct.age}" filterMatchMode="contains" headerText="Age">
+				<h:outputText value="#{ct.age}" />
+			</p:column>
+			<p:column style="text-align: center">
+				<f:facet name="header">
+				<p:commandButton value="Add" update=":addForm" actionListener="#{contactBean.clean()}" oncomplete="PF('addWi').show();" />
+				</f:facet>
+				<p:commandButton icon="pi pi-pencil" title="Edit" update=":editForm" action="#{contactBean.editContact(ct)}" oncomplete="PF('editWi').show();" />
+				<p:commandButton icon="pi pi-trash" title="Delete" update=":aForm" immediate="true" actionListener="#{contactBean.delContact(ct.id)}" oncomplete="PF('dtWi').clearFilters();" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>
